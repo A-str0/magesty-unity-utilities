@@ -4,6 +4,12 @@ namespace AudioSystem
 {
     public class AudioSystemManager 
     {
+        /// <summary>
+        /// Method for creating AudioEmitter instance with given settings
+        /// </summary>
+        /// <param name="settings">AudioEmitterSetiings to play sound with</param>
+        /// <param name="position">AudioSource position in world</param>
+        /// <param name="parent">Parent for AudioEmitter</param>
         public static void PlayClip(AudioEmitterSettings settings, Vector3 position = default, Transform parent = default)
         {
             GameObject obj = new GameObject();
@@ -20,7 +26,8 @@ namespace AudioSystem
         /// Overload for simple AudioClip play with default AudioSource settings
         /// </summary>
         /// <param name="clip">Clip to play</param>
-        /// <param name="position">AudioSource position in 3D</param>
+        /// <param name="position">AudioSource position in world</param>
+        /// <param name="parent">Parent for AudioEmitter</param>
         public static void PlayClip(AudioClip clip, Vector3 position = default, Transform parent = default)
         {
             AudioEmitterSettings defaultSettings = ScriptableObject.CreateInstance<AudioEmitterSettings>();
