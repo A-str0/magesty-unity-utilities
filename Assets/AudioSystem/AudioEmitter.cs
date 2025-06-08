@@ -10,6 +10,7 @@ namespace AudioSystem
         [SerializeField] private bool _playOnAwake;
 
         public UnityEvent PlaybackEnded;
+        private AudioNamespace _parentThread;
 
         private AudioSource _audioSource;
 
@@ -28,6 +29,11 @@ namespace AudioSystem
             _audioSource.playOnAwake = false;
         }
 
+        public void SetParentThread(AudioNamespace thread)
+        {
+            _parentThread = thread;
+        }
+
         /// <summary>
         /// Method for playing AudioSource given clip
         /// </summary>
@@ -38,17 +44,20 @@ namespace AudioSystem
             Play();
         }
 
+        public void Stop()
+        {
+            _audioSource.Stop();
+        }
+
         /// <summary>
         /// Method for playing AudioSource
         /// </summary>
-        public void Play() 
+        public void Play()
         {
-            // _audioSource.Play();
-            // StartCoroutine(WaitForEnd(_audioSource));
-            StartCoroutine(Play(_audioSource));
-        } 
+            StartCoroutine(PlayCoroutine(_audioSource));
+        }
 
-        private IEnumerator Play(AudioSource source)
+        private IEnumerator PlayCoroutine(AudioSource source)
         {
             Debug.Log("Started waiting");
             float remainingTime = source.GetClipRemainingTime();
@@ -59,6 +68,7 @@ namespace AudioSystem
             Debug.Log($"({gameObject}) {source.clip} playback is ended. Was waiting for {remainingTime}");
             PlaybackEnded?.Invoke();
 
+            _parentThread?.Release(this);
         }
 
         /// <summary>
