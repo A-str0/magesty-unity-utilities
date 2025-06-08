@@ -1,13 +1,13 @@
 using System.Collections;
 using AudioSystem;
-using UnityEditor.Timeline.Actions;
 using UnityEngine;
 
 namespace Tests
 {
     public class AudioSystemTester : MonoBehaviour
     {
-        [SerializeField] private AudioClip _clip;
+        // [SerializeField] private AudioClip _clip;
+        [SerializeField] private AudioEmitterSettings _settings;
 
         [SerializeField] private int _iterations = 12;
         [SerializeField] private float _delay = 1;
@@ -16,10 +16,9 @@ namespace Tests
         {
             StartCoroutine(Test());
         }
-
         private void TestSound()
         {
-            AudioManager.Instance.PlayClip(_clip);
+            AudioManager.Instance.PlayClip(_settings);
         }
 
         private IEnumerator Test()

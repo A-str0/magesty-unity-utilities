@@ -108,24 +108,48 @@ namespace AudioSystem
             Debug.Log($"AudioManager: Thread '{threadName}' added with maxPool: {maxPoolCapacity}, defaultPool: {defaultPoolCapacity}");
         }
 
-        public void PlayClip(AudioClip clip, string threadName = "default")
+        private AudioEmitter GetEmitter(string threadName)
         {
-            if (clip == null)
-            {
-                Debug.LogError("AudioManager: Cannot play null AudioClip!");
-                return;
-            }
-            
             if (threads.TryGetValue(threadName, out AudioNamespace thread))
             {
-                AudioEmitter emitter = thread.Get();
-                emitter.Play(clip);
+                return thread.Get();
             }
             else
             {
                 Debug.LogWarning($"AudioManager: Thread '{threadName}' not found, using default");
-                threads["default"].Get().Play(clip);
+                return threads["default"].Get()
             }
+        }
+
+        /// <summary>
+        /// Method for creating AudioEmitter instance with given settings
+        /// </summary>
+        /// <param name="settings">AudioEmitterSetiings to play sound with</param>
+        /// <param name="position">AudioSource position in world</param>
+        /// <param name="parent">Parent for AudioEmitter</param>
+        public void PlayClip(AudioEmitterSettings settings, Vector3 position = default, Transform parent = default, string threadName = "default")
+        {
+            AudioEmitter emitter = GetEmitter(threadName);
+
+            GameObject obj = emitter.gameObject;
+            obj.transform.position = position;
+            obj.transform.SetParent(parent);
+
+            emitter.Configure(settings);
+            emitter.Play();
+        }
+
+        /// <summary>
+        /// Overload for simple AudioClip play with default AudioSource settings
+        /// </summary>
+        /// <param name="clip">Clip to play</param>
+        /// <param name="position">AudioSource position in world</param>
+        /// <param name="parent">Parent for AudioEmitter</param>
+        public void PlayClip(AudioClip clip, Vector3 position = default, Transform parent = default, string threadName = "default")
+        {
+            AudioEmitterSettings defaultSettings = ScriptableObject.CreateInstance<AudioEmitterSettings>();
+            defaultSettings.GetType().GetField("_clip", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).SetValue(defaultSettings, clip);
+            PlayClip(defaultSettings, position, parent, threadName);
         }
     }
 }

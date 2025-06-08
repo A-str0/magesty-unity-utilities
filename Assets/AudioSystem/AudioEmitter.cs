@@ -7,8 +7,7 @@ namespace AudioSystem
     [RequireComponent(typeof(AudioSource))]
     public class AudioEmitter : MonoBehaviour 
     {
-        [SerializeField] private bool _playOnAwake;
-
+        [SerializeField] private AudioEmitterSettings _settings;
         public UnityEvent PlaybackEnded;
         private AudioNamespace _parentThread;
 
@@ -16,17 +15,37 @@ namespace AudioSystem
 
         private void Awake() 
         {
-            if (_playOnAwake) Play();
-
             OnConfigure();
         }
 
+        /// <summary>
+        /// Method to configure the audio source
+        /// </summary>
         private void OnConfigure()
         {
             if (_audioSource == null)
                 _audioSource = GetComponent<AudioSource>();
             
-            _audioSource.playOnAwake = false;
+            if (_settings != null)
+                Configure(_settings);
+        }
+
+        /// <summary>
+        /// Method for AudioSource configuration
+        /// </summary>
+        /// <param name="settings">ScriptableObject instance with configuration</param>
+        public void Configure(AudioEmitterSettings settings)
+        {
+            _settings = settings;
+
+            _audioSource.clip = settings.Clip;
+            _audioSource.outputAudioMixerGroup = settings.MixerGroup;
+            _audioSource.volume = settings.Volume;
+            _audioSource.pitch = settings.Pitch;
+            _audioSource.loop = settings.Loop;
+            _audioSource.playOnAwake = settings.PlayOnAwake;
+            _audioSource.spatialBlend = settings.SpatialBlend;
+            _audioSource.maxDistance = settings.MaxDistance;
         }
 
         public void SetParentThread(AudioNamespace thread)
@@ -54,22 +73,9 @@ namespace AudioSystem
         /// </summary>
         public void Play()
         {
-            StartCoroutine(PlayCoroutine(_audioSource));
-        }
-
-        private IEnumerator PlayCoroutine(AudioSource source)
-        {
-            Debug.Log("Started waiting");
-            float remainingTime = source.GetClipRemainingTime();
-
+            StartCoroutine(WaitForEnd(_audioSource));
             _audioSource.Play();
-            yield return new WaitForSeconds(remainingTime);
-
-            Debug.Log($"({gameObject}) {source.clip} playback is ended. Was waiting for {remainingTime}");
-            PlaybackEnded?.Invoke();
-
-            _parentThread?.Release(this);
-        }
+        } 
 
         /// <summary>
         /// Coroutine for waiting for AudioSource plyback to end
@@ -77,13 +83,16 @@ namespace AudioSystem
         /// <param name="source">AudioSource to wait for</param>
         private IEnumerator WaitForEnd(AudioSource source)
         {
-            Debug.Log("Started waiting");
             float remainingTime = source.GetClipRemainingTime();
             WaitForSeconds waitForClipRemainingTime = new WaitForSeconds(remainingTime);
             yield return waitForClipRemainingTime;
 
-            Debug.Log($"({gameObject}) {source.clip} playback is ended. Was waiting for {remainingTime}");
+            // Debug.Log($"({gameObject}) {source.clip} playback is ended. Was waiting for {remainingTime}");
             PlaybackEnded?.Invoke();
+            _parentThread?.Release(this);
+
+            if (_settings.DestroyAfterPlayback)
+                Destroy(gameObject);
         }
     }
 }
