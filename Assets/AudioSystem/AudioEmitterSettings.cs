@@ -14,7 +14,6 @@ namespace AudioSystem
         [SerializeField] private bool _playOnAwake;
         [SerializeField, Range(0f, 1f)] private float _spatialBlend = 0f; // 0 = 2D, 1 = 3D
         [SerializeField] private float _maxDistance = 500f;
-        [SerializeField] private bool _destroyAfterPlayback = true;
 
         public AudioClip Clip => _clip;
         public AudioMixerGroup MixerGroup => _mixerGroup;
@@ -24,6 +23,5 @@ namespace AudioSystem
         public bool PlayOnAwake => _playOnAwake;
         public float SpatialBlend => _spatialBlend;
         public float MaxDistance => _maxDistance;
-        public bool DestroyAfterPlayback => _destroyAfterPlayback;
     }
 }

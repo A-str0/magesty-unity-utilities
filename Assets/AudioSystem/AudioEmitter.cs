@@ -38,6 +38,9 @@ namespace AudioSystem
         {
             _settings = settings;
 
+            Debug.Log($"{settings}");
+            Debug.Log($"{_audioSource.clip}; {settings.Clip}");
+
             _audioSource.clip = settings.Clip;
             _audioSource.outputAudioMixerGroup = settings.MixerGroup;
             _audioSource.volume = settings.Volume;
@@ -63,11 +66,6 @@ namespace AudioSystem
             Play();
         }
 
-        public void Stop()
-        {
-            _audioSource.Stop();
-        }
-
         /// <summary>
         /// Method for playing AudioSource
         /// </summary>
@@ -76,6 +74,11 @@ namespace AudioSystem
             StartCoroutine(WaitForEnd(_audioSource));
             _audioSource.Play();
         } 
+
+        public void Stop()
+        {
+            _audioSource.Stop();
+        }
 
         /// <summary>
         /// Coroutine for waiting for AudioSource plyback to end
@@ -90,9 +93,6 @@ namespace AudioSystem
             // Debug.Log($"({gameObject}) {source.clip} playback is ended. Was waiting for {remainingTime}");
             PlaybackEnded?.Invoke();
             _parentThread?.Release(this);
-
-            if (_settings.DestroyAfterPlayback)
-                Destroy(gameObject);
         }
     }
 }

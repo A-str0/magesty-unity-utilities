@@ -20,4 +20,3 @@ MonoBehaviour:
   _playOnAwake: 1
   _spatialBlend: 0
   _maxDistance: 500
-  _destroyAfterPlayback: 1

@@ -89,10 +89,8 @@ namespace AudioSystem
                 return;
             }
 
-            // Create and add the new thread
             threads[threadName] = new AudioNamespace(maxPoolCapacity, defaultPoolCapacity);
 
-            // Update the serialized config for Inspector visibility
             threadConfigs.Add(new AudioThreadConfig
             {
                 threadName = threadName,
@@ -100,7 +98,7 @@ namespace AudioSystem
                 defaultPoolCapacity = defaultPoolCapacity
             });
 
-            // Pro tip: Mark object as dirty to ensure Inspector updates persist in Editor
+            // ensuring inspector updates in Editor
             #if UNITY_EDITOR
             EditorUtility.SetDirty(this);
             #endif
@@ -112,12 +110,13 @@ namespace AudioSystem
         {
             if (threads.TryGetValue(threadName, out AudioNamespace thread))
             {
+                // Debug.Log($"Getting AudioEmitter from {threadName} thread");
                 return thread.Get();
             }
             else
             {
                 Debug.LogWarning($"AudioManager: Thread '{threadName}' not found, using default");
-                return threads["default"].Get()
+                return threads["default"].Get();
             }
         }
 
