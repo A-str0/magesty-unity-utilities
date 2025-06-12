@@ -1,6 +1,6 @@
 using System.Collections;
 using UnityEngine;
-using AudioSystem;
+using MagestyUtilities.AudioSystem;
 
 namespace Tests
 {
