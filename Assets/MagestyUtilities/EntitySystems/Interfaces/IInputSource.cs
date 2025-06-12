@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace EntitySystems.Interfaces
+namespace MagestyUtilities.EntitySystem.Interfaces
 {
     public interface IInputSource
     {

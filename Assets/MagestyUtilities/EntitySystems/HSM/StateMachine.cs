@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using EntitySystems.Interfaces;
-using EntitySystems.StatesSystem.Interfaces;
+using MagestyUtilities.EntitySystem.Interfaces;
+using MagestyUtilities.EntitySystem.HSM.Interfaces;
 using UnityEngine;
 
-namespace EntitySystems.StatesSystem
+namespace MagestyUtilities.EntitySystem.HSM
 {
     public class StateMachine : IStateContext
     {
@@ -93,6 +93,8 @@ namespace EntitySystems.StatesSystem
             _statesPath = targetPath;
         }
 
+
+
         public void Update(float deltaTime)
         {
             foreach (var state in _statesPath)
@@ -100,6 +102,21 @@ namespace EntitySystems.StatesSystem
                 state.Update(deltaTime);
             }
 
+            CheckTransitions();
+        }
+
+        public void FixedUpdate()
+        {
+            foreach (var state in _statesPath)
+            {
+                state.FixedUpdate();
+            }
+
+            CheckTransitions();
+        }
+
+        private void CheckTransitions()
+        {
             if (_statesPath.Count == 0)
             {
                 // If there are no states, we're in a "dead" state, so we just

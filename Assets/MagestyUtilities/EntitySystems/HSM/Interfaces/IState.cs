@@ -1,8 +1,8 @@
-using EntitySystems.StatesSystem;
-using EntitySystems.Interfaces;
+using MagestyUtilities.EntitySystem.HSM;
+using MagestyUtilities.EntitySystem.Interfaces;
 using System.Collections.Generic;
 
-namespace EntitySystems.StatesSystem.Interfaces
+namespace MagestyUtilities.EntitySystem.HSM.Interfaces
 {
     public interface IState
     {
@@ -12,6 +12,7 @@ namespace EntitySystems.StatesSystem.Interfaces
 
         public abstract void Enter(IState prevState, IStateContext context);
         public abstract void Update(float deltaTime);
+        public abstract void FixedUpdate();
         public abstract void Exit();
         public abstract IState CheckTransitions();
     }

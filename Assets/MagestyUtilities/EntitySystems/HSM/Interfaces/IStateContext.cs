@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using EntitySystems.Interfaces;
+using MagestyUtilities.EntitySystem.Interfaces;
 
-namespace EntitySystems.StatesSystem.Interfaces
+namespace MagestyUtilities.EntitySystem.HSM.Interfaces
 {
     public interface IStateContext
     {

@@ -1,14 +1,10 @@
-using System;
 using System.Collections.Generic;
-using EntitySystems.Interfaces;
-using EntitySystems.StatesSystem;
-using EntitySystems.StatesSystem.Interfaces;
-using Mono.Cecil;
-using PlayerSystems;
-using PlayerSystems.States;
+using MagestyUtilities.EntitySystem.Interfaces;
+using MagestyUtilities.EntitySystem.HSM.Interfaces;
+using MagestyUtilities.EntitySystem.HSM;
 using UnityEngine;
 
-namespace EntitySystems.Controllers
+namespace MagestyUtilities.EntitySystem.Controllers
 {
     public class StateMachineController : MonoBehaviour
     {
@@ -26,8 +22,8 @@ namespace EntitySystems.Controllers
                 controllers.Add(controller);
             }
 
-            _rootState = new RootState(); // TODO: remade this
-            _inputSource = new PlayerInput(); // TODO: remade this
+            // _rootState = new RootState(); // TODO: remade this
+            // _inputSource = new PlayerInput(); // TODO: remade this
 
             _stateMachine = new StateMachine(_inputSource, controllers);
             _stateMachine.Initialize(_rootState);
@@ -36,6 +32,11 @@ namespace EntitySystems.Controllers
         private void Update()
         {
             _stateMachine.Update(Time.deltaTime);
+        }
+
+        private void FixedUpdate()
+        {
+            _stateMachine.FixedUpdate();
         }
     }
 }
