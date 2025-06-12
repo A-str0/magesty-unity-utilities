@@ -1,7 +1,6 @@
 using UnityEngine;
-using UnityEngine.Audio;
 
-namespace AudioSystem
+namespace MagestyUtilities.AudioSystem
 {
     public static class AudioSourceExtension 
     {

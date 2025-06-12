@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace AudioSystem
+namespace MagestyUtilities.AudioSystem
 {
     [CreateAssetMenu(fileName = "AudioEmitter Settings", menuName = "Audio/AudioEmitter Settings", order = 1)]
     public class AudioEmitterSettings : ScriptableObject

@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Pool;
 
-namespace AudioSystem
+namespace MagestyUtilities.AudioSystem
 {
     [Serializable]
     public class AudioNamespace

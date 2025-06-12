@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace AudioSystem
+namespace MagestyUtilities.AudioSystem
 {
     [RequireComponent(typeof(AudioSource))]
     public class AudioEmitter : MonoBehaviour 

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace AudioSystem
+namespace MagestyUtilities.AudioSystem
 {
     public class AudioManager : MonoBehaviour
     {
